@@ -70,11 +70,20 @@ int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
       int x_right = max(sel_start_x_, event.x);
       int y_left = min(sel_start_y_, event.y);
       int y_right = max(sel_start_y_, event.y);
-      for(int temp_x = x_left; temp_x <= x_right; temp_x++) {
-        for(int temp_y = y_left; temp_y <= y_right; temp_y++) {
-          Ogre::Vector3 pos;
-          bool success = context_->getSelectionManager()->get3DPoint( event.viewport, temp_x, temp_y, pos );
-          if ( success ) result_points.push_back(pos);
+      
+      Ogre::Vector3 start_pos, end_pos;
+      int num = (x_right-x_left+1)*(y_right-y_left+1);
+      bool success1 = context_->getSelectionManager()->get3DPoint( event.viewport, x_left, y_left, start_pos );
+      bool success2 = context_->getSelectionManager()->get3DPoint( event.viewport, x_right, y_right, end_pos );
+      if ( success1 && success2 ) {
+        for(int temp_x = x_left; temp_x <= x_right; temp_x++) {
+          for(int temp_y = y_left; temp_y <= y_right; temp_y++) {
+            Ogre::Vector3 pos;
+            pos[0] = start_pos[0] + (end_pos[0] - start_pos[0]) / num;
+            pos[1] = start_pos[1] + (end_pos[1] - start_pos[1]) / num;
+            pos[2] = start_pos[2] + (end_pos[2] - start_pos[2]) / num;
+            result_points.push_back(pos);
+          }
         }
       }
 
