@@ -26,6 +26,7 @@ In this video we can see that we set the fixed frame as base_link first, and by 
 
 ## Fix in publish_selected_points plugin
 
+```cpp
 int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
 {
   int flags = rviz::SelectionTool::processMouseEvent( event );
@@ -93,6 +94,7 @@ int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
       pub_.publish(selected_cloud);
     }
   }
+```
 
 We use get3DPoint( event.viewport, temp_x, temp_y, pos ) to replace the getSelection() and pcl::PointCloud to construct the point cloud.
 
