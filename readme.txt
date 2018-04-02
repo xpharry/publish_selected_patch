@@ -1,7 +1,10 @@
-################################ Overview ##################################
+# publish_selected_patch
+
+## Overview
 
 The tool, “publish selected points”, is a useful tool for immediately grasping a group of points in rviz. However, we find it publish the points with unmatched frame id especially when we are using Kinect.
-################################ Bug description ##################################
+
+## Bug description
 
 The rviz plugin “Slected Points Publisher” (earlier version: “Publish Selected Points”) is a very handy tool that user can drag with the left button to select objects in the 3D scene, and the coordinates of points within selected area would be published. However, we found certain issue exists when applying the tool.
 
@@ -21,7 +24,7 @@ https://www.youtube.com/watch?v=dUhovFmPqzQ
 
 In this video we can see that we set the fixed frame as base_link first, and by selecting different points and comparing their coordinates we can tell the tool does take the base_link as its fixed frame. Then we change the fixed frame field into odom(again, the mobot has been moved forward manually from its origin), and difference on x coordinates does exist when we select points on the back of shelf with different fixed frame. Thus we can say that when using laser scan instead of camera, this tool works very well with no frame bug.  
 
-################################ Fix in publish_selected_points plugin ##################################
+## Fix in publish_selected_points plugin
 
 int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
 {
@@ -93,11 +96,13 @@ int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
 
 We use get3DPoint( event.viewport, temp_x, temp_y, pos ) to replace the getSelection() and pcl::PointCloud to construct the point cloud.
 
-################################### Trying It Out ####################################
+## Trying It Out
 
 Once your RViz plugin is compiled and exported, simply run rviz normally:
 
+```
 $ rosrun rviz rviz 
+```
 
 and rviz will use pluginlib to find all the plugins exported to it.
 
@@ -105,7 +110,8 @@ Add a PublishSelectedPatch tool by clicking on the “+” button in the toolbar
 
 Now you can check the point cloud information by 
 
+```
 $ rostopic echo /selected_patch
+```
 
-################################################################################
 
