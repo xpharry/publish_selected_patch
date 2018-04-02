@@ -75,13 +75,15 @@ int PublishSelectedPatch::processMouseEvent( rviz::ViewportMouseEvent& event )
       int num = (x_right-x_left+1)*(y_right-y_left+1);
       bool success1 = context_->getSelectionManager()->get3DPoint( event.viewport, x_left, y_left, start_pos );
       bool success2 = context_->getSelectionManager()->get3DPoint( event.viewport, x_right, y_right, end_pos );
+      int idx = 0; 
       if ( success1 && success2 ) {
         for(int temp_x = x_left; temp_x <= x_right; temp_x++) {
           for(int temp_y = y_left; temp_y <= y_right; temp_y++) {
             Ogre::Vector3 pos;
-            pos[0] = start_pos[0] + (end_pos[0] - start_pos[0]) / num;
-            pos[1] = start_pos[1] + (end_pos[1] - start_pos[1]) / num;
-            pos[2] = start_pos[2] + (end_pos[2] - start_pos[2]) / num;
+            pos[0] = start_pos[0] + (end_pos[0] - start_pos[0]) / num * idx;
+            pos[1] = start_pos[1] + (end_pos[1] - start_pos[1]) / num * idx;
+            pos[2] = start_pos[2] + (end_pos[2] - start_pos[2]) / num * idx;
+            idx++;
             result_points.push_back(pos);
           }
         }
